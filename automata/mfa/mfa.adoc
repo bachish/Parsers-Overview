@@ -1,0 +1,21 @@
+= MFA 
+A mutating finite automaton (MFA) is a nondeterministic finite automaton (NFA) that changes its morphology over discrete time by a sequence of mutations.
+
+*MFA* can be represented by a sequence of NFAs, where each mutated NFA $N_{i+1}$, i ≥ 0, results from the application of a mutation to $N_i$.
+
+A *mutation* is a set of update actions on $N_i$:
+
+* insertions of states/transitions -- incremental mutations
+* removals of states/transitions -- decremental mutations (Lamperti G, Zhao X. Decremental subset construction)
+
+ Subset Construction determinization algorithm 
+ Subset Restructuring, which, instead of constructing the new DFA from scratch based on the mutated NFA, generates the new DFA by updating the previous DFA based on the mutation occurred
+
+== Determinization algorithm 
+At [1] authors introduce MFA throw determinization algorithm
+
+== Subset Construction 
+A Subset Construction determinization algorithm it's a classical algorithm
+
+=== Temporal determinization problem
+

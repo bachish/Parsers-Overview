@@ -2,6 +2,8 @@
 
 A review of theory about parsing algorithms, parser structure and parser combinatorics. Analysis of existing solutions.
 
-[Iguana](Iguana)
+[Iguana](Parsers/Iguana)
 
-[ANTLR v4](ANTLR/ANTLR_overview.adoc)
+[ANTLR v4](Parsers/ANTLR/ANTLR_overview.adoc)
+
+* ОТКУДА БРАТЬ СОСТОЯНИЯ!!!??? (в том, что добавляем или удаляем)

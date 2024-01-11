@@ -1,0 +1,16 @@
+* distance stem:[\delta(d_i)] -- minimum number of transitions connecting d0 with d
+* stratum Di -- set of d : stem:[\delta(d)] = i
+* set of states D partiotioned into finite set of strata stem:[D_0, D_1, ... D_k]
+* B - bud stack
+* Bud{d, l,setN} -- partically ordered by distance
+
+Algorithm updates stratum top-down. Processing stratum called *front*, their distance - front distance.
+
+Prefix -- set of processed strata, fixed. 
+
+Front: states are fixed, change only transition function
+
+Suffix: not processing yet, states can change (extension and transition function). Can perform distance relocation if one of B stack is empty. For that using relocation sequence R.
+
+
+

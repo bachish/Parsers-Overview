@@ -1,0 +1,174 @@
+= Codegen Examples 
+
+```g4
+grammar Rows;
+
+@parser::members { // add members to generated RowsParser
+    int col;
+        public RowsParser(TokenStream input, int col) { // custom constructor
+        this(input);
+        this.col = col;
+    }
+}
+
+file: (row NL)+ ;
+
+row
+locals [int i=0]
+    : ( STUFF
+        {
+            $i++;
+            if ( $i == col ) System.out.println($STUFF.text);
+        }
+    )+
+    ;
+TAB : '\t' -> skip ; // match but don't pass to the parser
+NL : '\r'? '\n' ; // match and pass to the parser
+STUFF: ~[\t\r\n]+ ; // match any chars except tab, newline
+```
+
+== Locals 
+The action within rule row accesses $i, the local variable defined with the locals clause. It also uses $STUFF.text to get the text for the most recently matched STUFF token.
+```g4
+row
+locals [int i=0]
+    : ( STUFF
+        {
+            $i++;
+            if ( $i == col ) System.out.println($STUFF.text);
+        }
+    )+
+    ;
+```
+
+=== In parser method `row` will be generate code above
+
+```java 
+do {
+    {
+        {
+        setState(11);
+        ((RowContext)_localctx).STUFF = match(STUFF);
+
+                    _localctx.i++;
+                    if ( _localctx.i == col ) System.out.println((((RowContext)_localctx).STUFF!=null?((RowContext)_localctx).STUFF.getText():null));
+                    
+        }
+    }
+    setState(15); 
+    _errHandler.sync(this);
+    _la = _input.LA(1);
+} while ( _la==STUFF );
+```
+
+=== For `*` after round brackets 
+
+```Java 
+while (_la==STUFF) {
+    {
+        {
+            setState(11);
+            ((RowContext)_localctx).STUFF = match(STUFF);
+
+            _localctx.i++;
+            if ( _localctx.i == col ) System.out.println((((RowContext)_localctx).STUFF!=null?((RowContext)_localctx).STUFF.getText():null));
+                    
+        }
+    }
+    setState(17);
+    _errHandler.sync(this);
+    _la = _input.LA(1);
+}
+```
+
+=== For just round brackets
+```Java
+((RowContext)_localctx).STUFF = match(STUFF);
+
+_localctx.i++;
+if ( _localctx.i == col ) System.out.println((((RowContext)_localctx).STUFF!=null?((RowContext)_localctx).STUFF.getText():null));
+			          
+```
+
+== Semantic predicates 
+```g4
+// action defines ExParser member: enum_is_keyword
+
+@members {boolean enum_is_keyword = true;}
+
+id : ID | {!enum_is_keyword}? 'enum' ;
+```
+Disallowing enum as an id as the lexer matches enum as a separate token from ID.
+
+
+== Lexical modes 
+Island Grammars: dealing with different formats in the same file. For example, JavaDoc mini language in Java files.
+
+ANTLR provides a lexer feature called *lexical modes*.
+
+```g4 
+lexer grammar XMLLexer;
+
+// Default "mode": Everything OUTSIDE of a tag
+OPEN        :   '<'                 -> pushMode(INSIDE) ;
+COMMENT     :   '<!--' .*? '-->'    -> skip ;
+EntityRef   :   '&' [a-z]+ ';' ;
+TEXT        :   ~('<'|'&')+ ;           // match any 16 bit char minus < and &
+
+// ----------------- Everything INSIDE of a tag ---------------------
+mode INSIDE;
+
+CLOSE       :   '>'                 -> popMode ; // back to default mode
+SLASH_CLOSE :   '/>'                -> popMode ;
+EQUALS      :   '=' ;
+STRING      :   '"' .*? '"' ;
+SlashName   :   '/' Name ;
+Name        :   ALPHA (ALPHA|DIGIT)* ;
+S           :   [ \t\r\n]           -> skip ;
+
+fragment
+ALPHA       :   [a-zA-Z] ;
+
+fragment
+DIGIT       :   [0-9] ;
+
+```
+
+== Members 
+
+```g4 
+grammar PropertyFile;
+@members {
+void startFile() { } // blank implementations
+void finishFile() { }
+void defineProperty(Token name, Token value) { }
+}
+file : {startFile();} prop+ {finishFile();} ;
+prop : ID '=' STRING '\n' {defineProperty($ID, $STRING)} ;
+ID
+ : [a-z]+ ;
+STRING : '"' .*? '"' ;
+```
+
+===  Alternatives names
+ANTLR lets us label the outermost alternatives of any rule using the # operator.
+```g4
+e : e MULT e        #Mult
+    | e ADD e       #Add
+    | INT           #Int
+    ;
+```
+Now ANTLR generates a separate listener method for each alternative of e.
+Consequently, we don’t need the op token label anymore. 
+
+```Java
+public interface LExprListener extends ParseTreeListener {
+    void enterMult(LExprParser.MultContext ctx);
+    void exitMult(LExprParser.MultContext ctx);
+    void enterAdd(LExprParser.AddContext ctx);
+    void exitAdd(LExprParser.AddContext ctx);
+    void enterInt(LExprParser.IntContext ctx);
+    void exitInt(LExprParser.IntContext ctx);
+...
+}
+```
