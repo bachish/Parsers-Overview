@@ -16,7 +16,7 @@ jobs:
             - run: "sudo apt-get install asciidoctor"
             
             - run: "asciidoctor 'Parsers/CNP/index.adoc' -D _site/fl"
-            - run: "cp -r 'Parsers/CNP/media' _site/fl"
+            - run: "cp -r 'Parsers/CNP/media' _site/cnp"
 
             - name: Upload GitHub Pages artifact
               uses: actions/upload-pages-artifact@v1.0.8
