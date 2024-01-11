@@ -15,7 +15,7 @@ jobs:
             - uses: actions/checkout@v3
             - run: "sudo apt-get install asciidoctor"
             
-            - run: "asciidoctor 'Parsers/CNP/index.adoc' -D _site/fl"
+            - run: "asciidoctor 'Parsers/CNP/index.adoc' -D _site/cnp"
             - run: "cp -r 'Parsers/CNP/media' _site/cnp"
 
             - name: Upload GitHub Pages artifact
