@@ -1,0 +1,8 @@
+:stem: asciimath
+== Parser generators 
+
+Grammar slots can be used as the code labels. The label stem:[L_{Xi}] corresponding to the alternate stem:[X ::= α_i] is equivalent to the slot stem:[X ::= ·α_i] and the return label stem:[R_{Xl}] is equivalent to stem:[Y ::= τ X · μ], where this is the slot immediately after the lth instance of X. 
+
+=== CNP 
+Алгоритм построения генератора парсеров из https://www.sciencedirect.com/science/article/pii/S0167642318302302[статьи]
+

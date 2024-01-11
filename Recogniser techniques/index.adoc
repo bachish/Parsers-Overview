@@ -17,10 +17,36 @@ Mark Johnson: The computational complexity of GLR parsing
 Generalized LR Parsing, Kluwer Academic Publishers, The Netherlands (1991), pp. 35-42 
 
 == Earley recognisers
+* is worst-case order cubic on general context free grammars and worst-case quadratic order on non-ambiguous grammars
 
  #todo   
 
 Jay Earley: An efficient context-free parsing algorithm
 Commun. ACM, 13 (2) (February 1970), pp. 94-102
 
+== LL(k)
+
+image::media/2024-01-11-17-44-58.png[]
+
+
+`+` Простой эффективный алгоритм парсинга
+
+`+` O(|w|)
+
+`-` Поддерживает только LL(k) грамматики (подмножество КС)
+
+`-` Левая рекурсия неразрешима
+
+Не LL(1) грамматика:
+
+A → *a* X C | *a* Y C
+
+Невозможно определить, по какому правилу продолжать разбор после *а*
+
 include::gll/index.adoc[]
+
+
+==  CYK algorithm
+  * Is worst-case cubic order on grammars in Chomsky normal form
+
+  H Younger, Recognition of context-free languages in time n3 , Information and Control 10 (2) (1967) 189–208.
