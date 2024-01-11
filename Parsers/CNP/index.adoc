@@ -1,0 +1,7 @@
+= О парсерах
+:lang: ru-RU
+:source-highlighter: rouge
+:stem: asciimath
+:toc:
+
+include::cnp.adoc[]
