@@ -4,9 +4,10 @@
 :stem: asciimath
 :toc:
 
+image::media/2024-01-11-16-17-56.png[]
+
 
 A recogniser for a language stem:[L(\Gamma)], specified by a grammar, Γ, is an algorithm that takes as input a string w, and returns success if stem:[w \in L(\Gamma)] and failure otherwise.
-
 
 == Continuation passing combinator parsers (Johnson)
 
