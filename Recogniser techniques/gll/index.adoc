@@ -1,0 +1,23 @@
+== Gll 
+ 
+ #todo -- описать алгоритм, приложить ссылки
+
+
+=== Representation of all derivations of a string
+==== 1. SPPF: Shared packed parse forests
+* In the worst case an SPPF can be of unbounded polynomial size
+* In binarised form -- worst case cubic size
+
+ #todo описать sppf, который реализован у нас в парсере
+
+==== 2. BSR: binary subtree representations
+Original article: https://www.sciencedirect.com/science/article/pii/S0167642318302302[Derivation representation using binary subtree sets]
+
+ Note: интересная структура данных со своими преимуществами. Но необходимо модифицировать алгоритм парсинга. Можно в будущем использовать как оптимизацию по памяти/сложности конструируемого парсера. Пока не актуальная задача.
+
+* No need for graph construction machinery -> Parsers that generate BSR sets are simpler to construct and require less runtime space
+* No edges are computed or stored
+
+== CNP: clustered nonterminal parsing
+
+ #Note: модификация LL(1) для распознавания всех КС грамматик. Похож на Gll, но исползует BSR. При этом быстрее эффективнее по памяти и по времени. Может быть интересен для дальнейших оптимизаций.

@@ -1,0 +1,25 @@
+= О парсерах
+:lang: ru-RU
+:source-highlighter: rouge
+:stem: asciimath
+:toc:
+
+
+A recogniser for a language stem:[L(\Gamma)], specified by a grammar, Γ, is an algorithm that takes as input a string w, and returns success if stem:[w \in L(\Gamma)] and failure otherwise.
+
+
+== Continuation passing combinator parsers (Johnson)
+
+ #todo
+ 
+Mark Johnson: The computational complexity of GLR parsing
+Generalized LR Parsing, Kluwer Academic Publishers, The Netherlands (1991), pp. 35-42 
+
+== Earley recognisers
+
+ #todo   
+
+Jay Earley: An efficient context-free parsing algorithm
+Commun. ACM, 13 (2) (February 1970), pp. 94-102
+
+include::gll/index.adoc[]
