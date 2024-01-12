@@ -1,0 +1,24 @@
+//comments 
+
+//directive for supporting tex formulas
+:stem: asciimath
+= Examples of useful adoc features
+See source code of this file
+
+== Highlighting
+#Highlighting text#
+
+== Tex formulas 
+stem:[a = b + c^3 \cdot \eps]
+
+== Bibliography
+_The Pragmatic Programmer_ <<pp>> should be required reading for all developers.
+To learn all about design patterns, refer to the book by the "`Gang of Four`" <<gof>>.
+
+[bibliography]
+== References
+
+* [[[pp]]] Andy Hunt & Dave Thomas. The Pragmatic Programmer:
+From Journeyman to Master. Addison-Wesley. 1999.
+* [[[gof,gang]]] Erich Gamma, Richard Helm, Ralph Johnson & John Vlissides.
+Design Patterns: Elements of Reusable Object-Oriented Software. Addison-Wesley. 1994.
