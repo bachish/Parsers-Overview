@@ -6,7 +6,7 @@ Is designed to reduce the space required to represent multiple derivation tree
 
 == 1. SPPF: Shared packed parse forests
 * In the worst case an SPPF can be of unbounded polynomial size
-* In binarised form -- worst case cubic size
+* In binarized form -- worst case cubic size
 
 Contains two types of nodes:
 
@@ -14,11 +14,13 @@ Contains two types of nodes:
 * *??* nodes (i), correspond number of rule
 
 
-Ambiguous result of the parsing: set of AST
+Ambiguous result of the parsing:
+
+*set of AST*
 
 image::media/2024-01-11-17-50-08.png[]
 
-SPPF 
+*SPPF* 
 
 image::media/2024-01-11-17-50-30.png[]
 
@@ -28,13 +30,15 @@ In an SPPF, nodes which have the same tree below them are shared and nodes which
 image::media/2024-01-11-17-50-41.png[]
 
 
-== 2. Binarised SPPF: Shared packed parse forests
+== 2. Binarized SPPF
+A binarized SPPF is obtained from a set of indexed BDTs by merging (sharing) nodes with the same label and putting separate families of children under packed nodes <<sjb19>>. 
+
 Contains three types of nodes:
 
 * *symbol* nodes (x, j, i), where stem:[x \in \{T, N,\epsilon}],  0 ≤ j ≤ i ≤ m. Corresponds to the parsing of substring [i, j] by symbol x.
 ** For stem:[x \in T] has no children.
 ** For stem:[x \in N] has packed node children of the form (A ::= γ ·, k)
-* *intermediate* nodes (t, j, i); 
+* *intermediate* nodes (t, j, i), where t -- slot between children, right children -- last symbol of productions in slot, left -- first symbol or slot with one step to left.
 ** have packed node children with labels of the form (t, k), where j ≤ k ≤ i.
 * *packed* nodes (t, k), where 0 ≤ k ≤ m and t is a grammar slot, t = X ::= α · β.
 ** have one or two children: the right child is a symbol node, and the left child (if it exists) is a symbol or intermediate node
@@ -53,16 +57,48 @@ S \to ABCD, \ A \to a, \ B \to b, \ C \to c, \ D \to d
 
 image::media/2024-01-11-18-25-29.png[]
 
-*Binarised SPPF*
+*Binarized SPPF*
 
 image::media/2024-01-11-18-26-18.png[]
 
- #todo описать sppf, который реализован у нас в парсере
+== 3. BSR set: binary subtree representations set <<sjb19>>
 
-== 3. BSR: binary subtree representations
-Original article: https://www.sciencedirect.com/science/article/pii/S0167642318302302[Derivation representation using binary subtree sets]
+If a packed node, w, has children (β, i, k) and (x, k, j) then w has label (βx, k) or (X ::= βx, k), so we can compute the
+children, and the parent, of w if the label of w is modified to be (βx, i, k, j) or (X ::= βx, i, k, j). 
 
- Note: интересная структура данных со своими преимуществами. Но необходимо модифицировать алгоритм парсинга. Можно в будущем использовать как оптимизацию по памяти/сложности конструируемого парсера.
+So we can merge 3 node into one BSR element.
+
+The #BSR element# in stem:[\Gamma] is a 4-tuple stem:[(\Omega, i, k, j)], where 0 ≤ i ≤ k ≤ j and stem:[\Omega] in one of the form:
+
+* stem:[X, X := α] is a production in stem:[\Gamma], 
+* stem:[\beta, |\beta| > 1] and for some X and δ, stem:[X := βδ] is a production in stem:[\Gamma].
+
+=== Example 
+*Grammar* 
+
+image::media/2024-01-12-14-15-23.png[]
+
+*Input*: "aab"
+
+*Binarised SPPF*
+
+image::media/2024-01-12-14-24-15.png[]
+
+*BSR set*
+
+stem:[\{(S := a AB, 0, 2, 3), (S := a Ab, 0, 2, 3), (a A, 0, 1, 2), (B := b, 2, 2, 3), (A := a, 1, 1, 2)}]
+
+We can restore binarized SPPF from BSR set.
 
 * No need for graph construction machinery -> Parsers that generate BSR sets are simpler to construct and require less runtime space
 * No edges are computed or stored
+
+ Note: интересная структура данных со своими преимуществами. Но необходимо модифицировать алгоритм парсинга. Можно в будущем использовать как оптимизацию по памяти/сложности конструируемого парсера.
+
+[bibliography]
+== References
+
+* [[[sjb19]]] Elizabeth Scott, Adrian Johnstone, L. Thomas van Binsbergen,
+Derivation representation using binary subtree sets,
+Science of Computer Programming, Volume 175,
+2019, Pages 63-84
