@@ -2,6 +2,8 @@
 
 //directive for supporting tex formulas
 :stem: asciimath
+//add table of contents
+:toc:
 = Examples of useful adoc features
 See source code of this file
 

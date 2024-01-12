@@ -1,4 +1,6 @@
 :stem: asciimath
+:toc:
+
 = Derivations trees
 Is designed to reduce the space required to represent multiple derivation tree
 

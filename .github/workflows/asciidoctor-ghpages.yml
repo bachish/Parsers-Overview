@@ -27,6 +27,14 @@ jobs:
             - run: "asciidoctor 'Derivations trees/index.adoc' -D _site/trees"
             - run: "cp -r 'Derivations trees/media' _site/trees"
 
+            #pargen
+            - run: "asciidoctor 'Parser generators/index.adoc' -D _site/pargen"
+            - run: "cp -r 'Parser generators/media' _site/pargen"
+
+            #index
+            - run: "asciidoctor 'index/index.adoc' -D _site"
+            - run: "cp -r 'index/media' _site"
+
 
             - name: Upload GitHub Pages artifact
               uses: actions/upload-pages-artifact@v1.0.8
