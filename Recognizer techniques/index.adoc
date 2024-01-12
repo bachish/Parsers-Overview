@@ -1,10 +1,11 @@
-= Recognizer techniques
 
 :lang: ru-RU
 :source-highlighter: rouge
 :stem: asciimath
 :toc:
+= Recognizer techniques
 
+https://bachisheo.github.io/Parsers-Overview[Start page]
 
 A recognizer for a language stem:[L(\Gamma)], specified by a grammar, Γ, is an algorithm that takes as input a string w, and returns success if stem:[w \in L(\Gamma)] and failure otherwise.
 

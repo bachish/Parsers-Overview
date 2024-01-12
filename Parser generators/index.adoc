@@ -1,6 +1,8 @@
 :stem: asciimath
 :toc:
-= Parser generators 
+= Parser generator 
+
+https://bachisheo.github.io/Parsers-Overview[Start page]
 
 There are few view of transition between nonterminals in generated code
 
@@ -12,11 +14,20 @@ There are few view of transition between nonterminals in generated code
 * attribute grammar features (ANTLR)
 * error-recovery
 * scannerless (ANTLR)
+* incrementality (tree-sitter)
+* ambiguous parsing (CNP, Iguana)
+* data-depending parsing (Iguana)
+* grammar debugging (?) (future work for Iguana)
+* semantic predicates (ANTLR)
+* operator precedence 
+* ...
 
 == Parser generator useful features 
 * parser object members (extended context) (ANTLR)
 * locals (members of context, local for rule)
 * mutators -- side-effecting actions (ANTLR)
+* error-recovery points (?)
+* ...
 
 == Projects
 
@@ -33,6 +44,7 @@ Grammar slots can be used as the code labels. The label stem:[L_{X_i}] correspon
 
 === ANTLR  
 image::media/2024-01-12-16-02-14.png[]
+
 
 [bibliography]
 == References
