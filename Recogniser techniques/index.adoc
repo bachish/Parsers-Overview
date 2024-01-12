@@ -43,8 +43,6 @@ A → *a* X C | *a* Y C
 
 Невозможно определить, по какому правилу продолжать разбор после *а*
 
-include::gll/index.adoc[]
-
 
 ==  CYK algorithm
   * Is worst-case cubic order on grammars in Chomsky normal form
