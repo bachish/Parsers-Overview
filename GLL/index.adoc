@@ -1,5 +1,5 @@
 :stem: asciimath
-== Gll 
+= Gll 
 
 `+` any CF grammar
 
@@ -7,18 +7,18 @@
 
  #todo -- унифицировать описание, приложить ссылки
 
-=== Helper data structures:
+== Helper data structures:
 
-==== Descriptor 
+=== Descriptor 
 
 image::media/2024-01-11-17-59-45.png[]
 
-==== GSS: graph structured stack 
+=== GSS: graph structured stack 
 Shares common initial substacks and recombines stacks when their associated processes converge
 
 image::media/2024-01-11-17-58-54.png[]
 
-=== Algorithm: 
+== Algorithm: 
 
 * Build a control table (can be non-deterministic!!!)
 * Process descriptors from the queue until it is empty or the "final" descriptor is reached
@@ -60,10 +60,10 @@ for (stack, back_stack, rule): edges{
 }
 ```
 
-=== Representation of all derivations of a string
+== Representation of all derivations of a string
 Is designed to reduce the space required to represent multiple derivation tree
 
-==== 1. SPPF: Shared packed parse forests
+=== 1. SPPF: Shared packed parse forests
 * In the worst case an SPPF can be of unbounded polynomial size
 * In binarised form -- worst case cubic size
 
@@ -87,7 +87,7 @@ In an SPPF, nodes which have the same tree below them are shared and nodes which
 image::media/2024-01-11-17-50-41.png[]
 
 
-==== 2. Binarised SPPF: Shared packed parse forests
+=== 2. Binarised SPPF: Shared packed parse forests
 Contains three types of nodes:
 
 * *symbol* nodes (x, j, i), where stem:[x \in \{T, N,\epsilon}],  0 ≤ j ≤ i ≤ m. Corresponds to the parsing of substring [i, j] by symbol x.
@@ -118,7 +118,7 @@ image::media/2024-01-11-18-26-18.png[]
 
  #todo описать sppf, который реализован у нас в парсере
 
-==== 3. BSR: binary subtree representations
+=== 3. BSR: binary subtree representations
 Original article: https://www.sciencedirect.com/science/article/pii/S0167642318302302[Derivation representation using binary subtree sets]
 
  Note: интересная структура данных со своими преимуществами. Но необходимо модифицировать алгоритм парсинга. Можно в будущем использовать как оптимизацию по памяти/сложности конструируемого парсера.
