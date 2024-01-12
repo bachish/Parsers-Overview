@@ -16,8 +16,8 @@ jobs:
             - run: "sudo apt-get install asciidoctor"
             
             #rec
-            - run: "asciidoctor 'Recogniser techniques/index.adoc' -D _site/rec"
-            - run: "cp -r 'Recogniser techniques/media' _site/rec"
+            - run: "asciidoctor 'Recognizer techniques/index.adoc' -D _site/rec"
+            - run: "cp -r 'Recognizer techniques/media' _site/rec"
             
             #gll
             - run: "asciidoctor 'GLL/index.adoc' -D _site/gll"
