@@ -1,8 +1,44 @@
 :stem: asciimath
-== Parser generators 
+:toc:
+= Parser generators 
 
-Grammar slots can be used as the code labels. The label stem:[L_{Xi}] corresponding to the alternate stem:[X ::= α_i] is equivalent to the slot stem:[X ::= ·α_i] and the return label stem:[R_{Xl}] is equivalent to stem:[Y ::= τ X · μ], where this is the slot immediately after the lth instance of X. 
+There are few view of transition between nonterminals in generated code
 
-=== CNP 
-Алгоритм построения генератора парсеров из https://www.sciencedirect.com/science/article/pii/S0167642318302302[статьи]
+* state machine (may be in form of code labels) (ANTLR, CNP)
+* recursive call
 
+== Parser useful features
+* templates (CNP, ART)
+* attribute grammar features (ANTLR)
+* error-recovery
+* scannerless (ANTLR)
+
+== Parser generator useful features 
+* parser object members (extended context) (ANTLR)
+* locals (members of context, local for rule)
+* mutators -- side-effecting actions (ANTLR)
+
+== Projects
+
+=== CNP <<sjb19>>
+* templates 
+* has parser combinator too
+
+Grammar slots can be used as the code labels. The label stem:[L_{X_i}] corresponding to the alternate stem:[X := α_i] is equivalent to the slot stem:[X := ·α_i] and the return label stem:[R_{Xl}] is equivalent to stem:[Y ::= τ X · μ], where this is the slot immediately after the lth instance of X.
+
+=== Art <<sj11>>
+* templates 
+* convert grammar 
+* TIF  
+
+=== ANTLR  
+image::media/2024-01-12-16-02-14.png[]
+
+[bibliography]
+== References
+
+* [[[sj11]]] Johnstone, A., Scott, E. (2011). Translator Generation Using ART. In: Malloy, B., Staab, S., van den Brand, M. (eds) Software Language Engineering. SLE 2010. Lecture Notes in Computer Science, vol 6563. Springer, Berlin, Heidelberg. https://doi.org/10.1007/978-3-642-19440-5_20,  https://link.springer.com/chapter/10.1007/978-3-642-19440-5_20[access]
+* [[[sjb19]]] Elizabeth Scott, Adrian Johnstone, L. Thomas van Binsbergen,
+Derivation representation using binary subtree sets,
+Science of Computer Programming, Volume 175,
+2019, Pages 63-84, https://www.sciencedirect.com/science/article/pii/S0167642318302302#se0010[access]

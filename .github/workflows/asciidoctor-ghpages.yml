@@ -27,9 +27,9 @@ jobs:
             - run: "asciidoctor 'Derivations trees/index.adoc' -D _site/trees"
             - run: "cp -r 'Derivations trees/media' _site/trees"
 
-            # #pargen
-            # - run: "asciidoctor 'Parser generators/index.adoc' -D _site/pargen"
-            # - run: "cp -r 'Parser generators/media' _site/pargen"
+            #pargen
+            - run: "asciidoctor 'Parser generators/index.adoc' -D _site/pargen"
+            - run: "cp -r 'Parser generators/media' _site/pargen"
 
             #index
             - run: "asciidoctor 'index/index.adoc' -D _site"

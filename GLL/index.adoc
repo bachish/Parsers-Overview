@@ -68,7 +68,7 @@ for (stack, back_stack, rule): edges{
 
 == CNP: clustered nonterminal parsing
 
-Modification of LL(1) to recognize all KC grammars. Similar to GLL, but uses BSR. It is faster, more efficient in memory and time.
+Modification of LL(1) to recognize all KC grammars. Similar to GLL, but uses https://bachisheo.github.io/Parsers-Overview/trees/#_3_bsr_set_binary_subtree_representations_set_sjb19[BSR]. It is faster, more efficient in memory and time.
 
 But due to the absence of SPPF edges, the error recovery algorithm cannot be applied.
 
