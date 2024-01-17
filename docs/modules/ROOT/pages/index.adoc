@@ -12,3 +12,5 @@ image::index/yacc.png[]
 
 
 https://arxiv.org/abs/2205.04600 -- gll with updated lexer
+
+Link to yacc :  xref:yacc.adoc[YACC!]

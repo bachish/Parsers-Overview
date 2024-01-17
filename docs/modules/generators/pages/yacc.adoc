@@ -1,12 +1,12 @@
 :stem: asciimath
-:toc:
+
 = Yacc  <<asu86>>
 * Algorithm: LARL 
 * Source language: C
 
 Yacc translator routine:
 
-image::media/yacc_routine.png[]
+image::yacc/yacc_routine.png[]
 
 
 A Yacc source program has three parts, divided by `%%`:

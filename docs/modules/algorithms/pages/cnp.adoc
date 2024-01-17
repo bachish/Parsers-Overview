@@ -1,5 +1,4 @@
 :stem: asciimath
-:toc:
 
 = CNP: clustered nonterminal parsing
 GLL like algorithm
@@ -86,7 +85,7 @@ Let nonterminals of the grammar stem:[\Gamma] be A, ... , Z , with start symbol 
 // }
 // ```
 
-//image::media/2024-01-12-17-05-35.png[]
+//image::cnp/2024-01-12-17-05-35.png[]
 
 ``` kotlin
 fun sParser(){

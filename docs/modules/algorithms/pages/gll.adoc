@@ -1,5 +1,4 @@
 :stem: asciimath
-:toc:
 
 = Gll 
 

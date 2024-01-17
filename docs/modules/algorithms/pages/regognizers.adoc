@@ -1,8 +1,7 @@
 
-:lang: ru-RU
 :source-highlighter: rouge
 :stem: asciimath
-:toc:
+
 = Recognizer techniques
 
 https://bachisheo.github.io/Parsers-Overview[Start page]
@@ -26,7 +25,7 @@ Commun. ACM, 13 (2) (February 1970), pp. 94-102
 
 == LL(k)
 
-image::media/2024-01-11-17-44-58.png[]
+image::regognizers/2024-01-11-17-44-58.png[]
 
 
 `+` Простой эффективный алгоритм парсинга
