@@ -1,9 +1,19 @@
-# Overview
+# 
 
-A review of theory about parsing algorithms, parser structure and parser combinatorics. Analysis of existing solutions.
+How to run site?
 
-[Iguana](Parsers/Iguana)
+* prepare system 
+** install latest node (maybe in nvm -- node version manager)
 
-[ANTLR v4](Parsers/ANTLR/ANTLR_overview.adoc)
+* Install `antora` (3.1.7+) 
 
-* ОТКУДА БРАТЬ СОСТОЯНИЯ!!!??? (в том, что добавляем или удаляем)
+From scratch
+
+1. `node -e "fs.writeFileSync('package.json', '{}')"` -- create empty package
+2. `npm i -D -E @antora/cli@3.1 @antora/site-generator@3.1` -- install `antora` packages
+
+Or if files `package-lock.json` and `package.json` exists -- just `npm install` (node package manager, install packages from configurations) 
+
+* Build the site!
+
+* `npx antora --fetch antora-playbook.yml`

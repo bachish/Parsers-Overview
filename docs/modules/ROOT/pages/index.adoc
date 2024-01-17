@@ -1,16 +1,10 @@
 = Parsers overview 
 
-* https://bachisheo.github.io/Parsers-Overview/rec[Recogniser techniques]
-
-* https://bachisheo.github.io/Parsers-Overview/gll[Gll style algorithms]
-
-* https://bachisheo.github.io/Parsers-Overview/trees[Derivations trees]
-
-* https://bachisheo.github.io/Parsers-Overview/pargen[Parser generators]
+A review of theory about parsing algorithms, parser structure and parser combinatorics. Analysis of existing solutions.
 
 image::yacc.png[]
 
 
 https://arxiv.org/abs/2205.04600 -- gll with updated lexer
 
-Link to yacc :  xref:generators/yacc.adoc[YACC!]
+Link to yacc :  xref:generators:yacc.adoc[YACC!]
