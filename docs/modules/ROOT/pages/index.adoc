@@ -8,7 +8,7 @@
 
 * https://bachisheo.github.io/Parsers-Overview/pargen[Parser generators]
 
-image::index/yacc.png[]
+image::yacc.png[]
 
 
 https://arxiv.org/abs/2205.04600 -- gll with updated lexer
