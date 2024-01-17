@@ -1,0 +1,14 @@
+= Parsers overview 
+
+* https://bachisheo.github.io/Parsers-Overview/rec[Recogniser techniques]
+
+* https://bachisheo.github.io/Parsers-Overview/gll[Gll style algorithms]
+
+* https://bachisheo.github.io/Parsers-Overview/trees[Derivations trees]
+
+* https://bachisheo.github.io/Parsers-Overview/pargen[Parser generators]
+
+image::index/yacc.png[]
+
+
+https://arxiv.org/abs/2205.04600 -- gll with updated lexer

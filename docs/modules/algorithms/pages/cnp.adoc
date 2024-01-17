@@ -1,0 +1,326 @@
+:stem: asciimath
+:toc:
+
+= CNP: clustered nonterminal parsing
+GLL like algorithm
+
+https://bachisheo.github.io/Parsers-Overview[Start page]
+
+
+Modification of LL(1) to recognize all KC grammars. Similar to https://bachisheo.github.io/Parsers-Overview/gll[GLL], but uses https://bachisheo.github.io/Parsers-Overview/trees/#_3_bsr_set_binary_subtree_representations_set_sjb19[BSR]. It is faster, more efficient in memory and time.
+
+But due to the absence of SPPF edges, our approach to error recovery algorithm cannot be applied.
+
+== Algorithm 
+
+Let nonterminals of the grammar stem:[\Gamma] be A, ... , Z , with start symbol S. Then the CNP parser for stem:[\Gamma] is given by:
+
+// stem:[Y := γ · xβ] -- current grammar position 
+
+// stem:[k] -- current input position 
+
+// h -- current return index (for nested calls)
+
+
+// ```kotlin 
+// // we can describe right part of ruse as regular expression
+// // pseudo code  x * y, * -- means position in rule
+
+// val rules: Map<Nonterminal, Set<Regexp>>
+// val input: ArrayList<Any>			//input string 
+// data class Descriptor(slot: Slot, l, j)
+// val handledDescriptors: Set<Descriptor>
+// val queue: Queue<Descriptor>
+
+// while (queue.isNotEmpty()){
+// 	handle(queue.top)
+// }
+
+// fun handle(desc: Descriptor){
+// 	//return position
+// 	var cu = desc.l 
+// 	var Y = desc.slot
+
+// 	fun handleTerminal(x: Terminal){
+// 		//let Y := y*xb
+// 		Y = yx * B
+// 		k++
+// 	}
+
+// 	/**
+// 	Continue parsing all allowed rules
+// 	 */
+// 	fun handleNonterminal(X: Nonterminal){
+// 		//let Y := y*Xb
+// 		h = yX * B 
+// 		stored_k = k
+// 		//equivalent link (Y := yX*b, cu) <-- (X, k)
+// 		//pair (X, k) -- like a child
+// 		stored[X][k] = Pair(Y := yX*b, cu) 
+// 		for(m : rules[X]){
+// 			//about lookahead set see below
+// 			if(input[k] in lookaheadSet[X][m]){
+// 				createDescriptor(X := *m, k, k)
+
+// 			}
+// 		}
+// 	}
+
+// 	/**
+// 	Go back to all Nonterminal calls (to all parents in `stored`)
+// 	*/
+// 	fun handleEnd(){
+// 		// let Y := y*
+// 		//we have successfully matched γ 
+// 		//to the input substring a[cu]...a[k−1]
+// 		for ((Z:= tY*n, l) in stored[Y, cu]){
+// 			createDescriptor(Z := tY*n, l, k)
+// 		}
+// 	}
+
+// 	when(Y){
+// 		Y := y* -> handleEnd()
+// 		Y := y*xb -> handleTerminal(x)
+// 		Y := y*Xb -> handleNonterminal(X)
+// 	}
+// }
+// ```
+
+//image::media/2024-01-12-17-05-35.png[]
+
+``` kotlin
+fun sParser(){
+	//set of all descriptors constructed so far	
+	U := ∅; 
+	//set of descriptors waiting to be processed
+	R := ∅; 
+	//set of CRF return actions represented as triples (X, k, j)
+	P := ∅;
+	//set of BSR s, (X ::= μ , i, k, j) and (μ , i, k, j) 
+	Y := ∅
+
+	//input string
+	val I = readLine()		
+	//add end-of-string character
+	I = I + "$"
+	let m = a.length
+	//create CRF node
+	u0 = (S, 0) 
+
+	ntAdd(S, 0)
+	//current CRF node index
+	val cU = null
+	//current input position
+	val cI = 0
+	
+	while R != ∅ {
+		//remove descriptor
+		val (L, k, j) = R.pop()
+		cU := k; cI := j; goto L
+		when (L){
+			//own for each nonterminal
+			code(A)
+				//own branch for each grammar slot
+			...
+			code(Z)
+		}
+	}
+
+	return 	if (for some α and l, (S := α, 0, l, m) ∈ Y) {success}
+			else {failure}
+}
+```
+
+== Templates 
+CNP templates -- the specification of code (X := a.b)
+
+Suppose that the grammar rule for X is X ::= t1 | ... | tp , define *code for nonterminal*:
+
+```kotlin
+code(X) { 
+	when(X){
+		X := .t1 -> {
+			code(X := .t1)
+			if(I[cI] in follow(X)){
+				rtn(X, cu, ci)
+			}
+		}
+		X := .tp -> {
+			code(X := .tp)
+			if(I[cI] in follow(X)){
+				rtn(X, cu, ci)
+			}
+		}
+	}
+}
+```
+
+then *code for grammar slot*:
+
+```kotlin 
+code(X := ·) {
+	Y := Y union {(X := eps , cI , cI, cI)}
+} 
+
+code(X := Aa.B) {
+	bsrAdd(X := Aa.B, cU, cI, cI + 1)
+	cI := cI + 1
+}
+
+code(X := AY.B) {
+	call(L, c U , c I )
+	}
+
+code(X :=.x1 ... xd) {
+	code(X := x1.x2 ... xd){
+	if(!testSelect(I[cI], X, x2 ... xd)) {return}
+	code(X := x1x2.x3 ... xd)
+	...
+	if(!testSelect(I[c I ], X, xd)) {return}
+	code(X ::= x1 ... xd.)
+}
+```
+
+where 
+
+* a is any terminal 
+* Y is any nonterminal
+* A and B are (possibly empty) strings of terminals and nonterminals
+*  L denotes the label corresponding to the slot X ::= AY.B
+
+== Example CNP parser
+Example CNP parser for the simple grammar S ::= d | S a 
+
+``` kotlin
+fun sParser(){
+	U := ∅; 
+	R := ∅; 
+	P := ∅;
+	Y := ∅
+
+	val I = readLine()		
+	I = I + "$"
+	let m = a.length
+	u0 = (S, 0) 
+
+	ntAdd(S, 0)
+	val cU = null
+	val cI = 0
+	
+	while R != ∅ {
+		val (L, k, j) = R.pop()
+		cU := k; cI := j; goto L
+		when (L){
+			//own branch for each grammar slot
+			S := ·d -> {
+				bsrAdd(S ::= d·, cU , cI , cI + 1)
+				cI := cI + 1
+				if(I[cI] ∈ follow(S)){ 
+					rtn(S, cU , cI) 
+				}
+			}
+
+			S := ·Sa -> {
+				call(S := S·a, cU, cI) 
+			}
+
+			S := S·a -> {
+				if(testSelect(I[cI], S, a)) {
+					bsrAdd(S := Sa·, cU , cI , cI + 1)
+					cI := cI + 1
+					if(I[cI] ∈ follow(S)) { 
+						rtn(S, cU , cI )
+						}
+				}
+			}
+		}
+	}
+
+	return 	if (for some α and l, (S := α, 0, l, m) ∈ Y) {success}
+			else {failure}
+}
+```
+
+Functions `ntAdd` and `testSelect` have to be constructed for a given grammar :stem[\Gamma] by the parser generator. testSelect makes use of the standard `first` and `follow` sets, which must also be constructed by the parser generator. The other functions are grammar independent.
+
+== Grammar depended functions
+* ntAdd -- add all rules, available from current position in string and nonterminal
+
+```kotlin 
+ntAdd(X, j) {
+	for all(grammar rules X ::= τ ) {
+		if(testSelect(I[j], X, τ )) {
+			dscAdd(X ::= ·τ, j, j) 
+		} 
+	}
+}
+```
+
+* testSelect
+
+```kotlin
+testSelect(b, X, α) {
+	return b in first(α) or (eps in first(α) and b in follow(X))
+}
+```
+
+== helper functions 
+
+* dscAdd -- add a descriptor, if it has not already been added
+
+```kotlin
+dscAdd(L, k, i) {
+	if (L, k, i) not in U {
+		U.add(L, k, i) 
+		R.add(L, k, i) 
+	}
+}
+```
+
+* rtn 
+
+```kotlin
+rtn(X, k, j) {
+	if ((X, k, j) not in P) {
+		P.add(X, k, j)
+		for (val (L, i) in CFR.getChildren(X, k)){
+			dscAdd(L, i, j); 
+			bsrAdd(L, i, k, j) 
+		}
+	} 
+}
+```
+
+* call
+
+```
+call(L, i, j) {
+	val (Y := α X · β) = L
+	val u = CFR.getOrCreate((L, i))
+
+	if((X, j) not in CFR){
+		val v = CFR.create(X, j)
+		addEdge(v, u)
+		ntAdd(X, j)
+	}
+	else { 
+		val v = CRF[X, j]
+		if(!edgeExists(v, u)){
+			addEdge(v, u)
+		}
+		for ((X, j, h) in P) {
+			dscAdd(L, i, h); 
+			bsrAdd(L, i, j, h) 
+		} 
+	} 
+} 
+```
+
+ Why why they use lookahed in LL? Compare this variant and without lookahead.
+
+[bibliography]
+== References
+
+* [[[sjb19]]] Elizabeth Scott, Adrian Johnstone, L. Thomas van Binsbergen,
+https://www.sciencedirect.com/science/article/pii/S0167642318302302[Derivation representation using binary subtree sets], Science of Computer Programming, Volume 175,
+2019, Pages 63-84
