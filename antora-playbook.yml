@@ -1,0 +1,15 @@
+site:
+  title: Parsing techniques overview
+  start_page: parsers::index.adoc
+content:
+  sources:
+  - url: .
+    start_path: docs
+    branches: HEAD
+
+asciidoc:
+  attributes:
+    page-pagination: ''
+ui:
+  bundle:
+    url: ./ui
