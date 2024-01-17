@@ -37,7 +37,7 @@ jobs:
 
             #cnp : GLL/CNP/index.adoc
             - run: "asciidoctor 'GLL/CNP/index.adoc' -D _site/gll/cnp"
-            - run: "cp -r 'GLL/CNP/index/media' _site/gll/cnp"
+            - run: "cp -r 'GLL/CNP/media' _site/gll/cnp"
 
 
             - name: Upload GitHub Pages artifact
