@@ -37,6 +37,17 @@ There are few view of transition between nonterminals in generated code
 
 Grammar slots can be used as the code labels. The label stem:[L_{X_i}] corresponding to the alternate stem:[X := α_i] is equivalent to the slot stem:[X := ·α_i] and the return label stem:[R_{Xl}] is equivalent to stem:[Y ::= τ X · μ], where this is the slot immediately after the lth instance of X.
 
+Parser generator generate:
+
+* Standard `FIRST` and `FOLLOW` sets  
+* function `ntAdd()` 
+* function `testSelect()`
+
+Global variables: 
+
+* CRF graph  
+
+
 === Art <<sj11>>
 * templates 
 * convert grammar 
@@ -45,6 +56,8 @@ Grammar slots can be used as the code labels. The label stem:[L_{X_i}] correspon
 === ANTLR  
 image::media/2024-01-12-16-02-14.png[]
 
+=== Iguana (?)
+has parser generated methods in source code 
 
 [bibliography]
 == References

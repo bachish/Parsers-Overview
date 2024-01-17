@@ -5,6 +5,10 @@
 
 https://bachisheo.github.io/Parsers-Overview[Start page]
 
+There is some GLL-like algorithms:
+
+* https://bachisheo.github.io/Parsers-Overview/gll/cnp[CNP]
+
 == Original GLL
 
 `+` any CF grammar
@@ -68,11 +72,6 @@ for (stack, back_stack, rule): edges{
 ```
 
 
-== CNP: clustered nonterminal parsing
-
-Modification of LL(1) to recognize all KC grammars. Similar to GLL, but uses https://bachisheo.github.io/Parsers-Overview/trees/#_3_bsr_set_binary_subtree_representations_set_sjb19[BSR]. It is faster, more efficient in memory and time.
-
-But due to the absence of SPPF edges, the error recovery algorithm cannot be applied.
 
 == RGLL: reduced descriptor GLL parsers
 
@@ -84,15 +83,14 @@ nodes, allowing less information to be stored in the descriptors.
 == References
 
 * [[[sjb19]]] Elizabeth Scott, Adrian Johnstone, L. Thomas van Binsbergen,
-Derivation representation using binary subtree sets,
-Science of Computer Programming, Volume 175,
+https://www.sciencedirect.com/science/article/pii/S0167642318302302[Derivation representation using binary subtree sets], Science of Computer Programming, Volume 175,
 2019, Pages 63-84
 * [[[sj16]]] Elizabeth Scott, Adrian Johnstone,
-Structuring the GLL parsing algorithm for performance,
+https://www.sciencedirect.com/science/article/pii/S016764231630003X[Structuring the GLL parsing algorithm for performance],
 Science of Computer Programming,
 Volume 125,
 2016,
 Pages 1-22,
 ISSN 0167-6423,
 https://doi.org/10.1016/j.scico.2016.04.003.
-(https://www.sciencedirect.com/science/article/pii/S016764231630003X)
+
