@@ -1,0 +1,44 @@
+= Grammars 
+
+== BNF 
+ https://condor.depaul.edu/ichu/csc447/notes/wk3/BNF.pdf
+
+* `::=` means "is defined as" (some variants use `:=` instead)
+* `|` means `or`
+* Angle brackets mean a nonterminal
+* Symbols without angle brackets are terminals
+
+Example 
+
+```
+<number> ::= <digit> | <number> <digit>
+<digit> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+```
+
+== EBNF 
+BNF with some extensions (they vary, but often are derived from
+regular expression syntax):
+
+* `*` (The Kleene Star): means 0 or more
+occurrences
+* `+` (The Kleene Cross): means 1 or more
+occurrences
+* `?` means 0 or 1 occurrences (sometimes
+`[ … ]` used instead)
+* Use of parentheses for grouping
+
+
+
+
+
+== PEG -- Parsing Expression Grammars
+
+ Ford, Bryan (January 2004). "Parsing Expression Grammars: A Recognition Based Syntactic Foundation" [https://bford.info/pub/lang/peg.pdf]
+
+ https://en.wikipedia.org/wiki/Parsing_expression_grammar
+
+Syntactically, PEGs also look similar to context-free grammars (CFGs), but they have a different interpretation: the choice operator selects the first match in PEG, while it is ambiguous in CFG.
+
+Unlike CFGs, PEGs cannot be ambiguous; a string has exactly one valid parse tree or none. t is conjectured that there exist context-free languages that cannot be recognized by a PEG, but this is not yet proven. 
+
+ So PEG is a subsequence of CFG?

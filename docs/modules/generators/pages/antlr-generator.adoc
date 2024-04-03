@@ -1,5 +1,88 @@
 = ANTLR 4: generator
 
+== Project structure
+
+* RuntimeRunner -- base class for file generator object (JavaRunner...)
+*
+
+== Generated parser 
+* use ANT states for lookahead
+* for each nonterminal generates parser-method
+* children parsing-methods call recursive 
+
+=== Parsing method example  
+*Nonterminal*: `file = prod | sum | NUM`;
+```Java
+		public final FileContext file() throws RecognitionException {
+		FileContext _localctx = new FileContext(_ctx, getState());
+		enterRule(_localctx, 0, RULE_file);
+		try {
+			setState(17);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(14);
+				sum();
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(15);
+				prod();
+				}
+				break;
+			case 3:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(16);
+				match(NUM);
+				}
+				break;
+			}
+		}
+        }
+```
+
+
+=== Nonterminals 
+A RuleContext class is a record of a single rule invocation. The forms a *stack* of these context objects using the parent pointer. Implements `Tree` interface (has children and parent) so can be presented as *AST-tree*.
+
+```java 
+public final SContext s() throws RecognitionException {
+    SContext _localctx = new SContext(_ctx, getState()); /// create new node
+    enterRule(_localctx, 0, RULE_s);                     /// push it (set in global variable)
+    ...
+    exitRule();                                          /// pop back to _localctx
+    return _localctx;
+}
+```
+
+Subclasses of https://github.com/antlr/antlr4/blob/dev/runtime/Java/src/org/antlr/v4/runtime/ParserRuleContext.java[ParsersRuleContext] made for each #nonterminal# to track the parameters, return values, locals, and labels specific to that rule. These are the objects that are returned from rules. 
+
+Useful methods: 
+
+```java 
+public ParserRuleContext extends RuleContext{
+    public Token start, stop;
+    public RecognitionException exception;
+
+    public void enterRule(ParseTreeListener listener) { }
+	public void exitRule(ParseTreeListener listener) { }
+    public TerminalNode addChild(TerminalNode t) 
+    /** Add an error node child and force its parent to be this node.*/
+	public ErrorNode addErrorNode(ErrorNode errorNode)
+	public List<TerminalNode> getTokens(int ttype) 
+    public <T extends ParserRuleContext> T getRuleContext(Class<? extends T> ctxType, int i) {
+		return getChild(ctxType, i);
+	}
+}
+```
+
+For each 
+
 
 == Codegen Examples 
 

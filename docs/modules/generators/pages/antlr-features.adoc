@@ -17,7 +17,7 @@ locals [int i = 1;]
 ```
 False predicates make the associated alternative “disappear” from the grammar and, hence, from the generated parser. In this case, a false predicate makes the (...)* loop terminate and return from rule sequence.
 
-image::antlr/sequence.png[]
+image::antrl-features/sequence.png[]
 
 
 == Error recovery 
@@ -187,7 +187,7 @@ WS : [ \r\t\u000C\n]+ -> channel(HIDDEN);
 The `-> channel(HIDDEN)` is a lexer command. This tokens will bw ignored by parser.
 
 [cols="1,1"]
-|==
+|===
 |Pattern Name 
 |ANTLR 
 
@@ -218,5 +218,5 @@ The `-> channel(HIDDEN)` is a lexer command. This tokens will bw ignored by pars
 |Operator precedence (priority)
 | link:https://www.engr.mun.ca/~theo/Misc/exp_parsing.htm[Precedence Climbing]
 
-|== 
+|===
 

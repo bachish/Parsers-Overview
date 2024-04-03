@@ -1,19 +1,27 @@
 :stem: asciimath
 
-= Derivations trees
+= Derivation trees 
 
-https://bachisheo.github.io/Parsers-Overview[Start page]
+This section describes some optimized forms of derivation tree storage.
 
-Is designed to reduce the space required to represent multiple derivation tree
+== 1. SPPF
+A #shared packed parse forest# (SPPF) is a representation of all of the derivation trees of a given
+string a1 . . . an. It's designed to reduce the space required to represent multiple derivation tree
 
-== 1. SPPF: Shared packed parse forests
 * In the worst case an SPPF can be of unbounded polynomial size
 * In binarized form -- worst case cubic size
 
 Contains two types of nodes:
 
-* *symbol* nodes (x, j, i), where stem:[x \in \{T, N,\epsilon}],  0 ≤ j ≤ i ≤ m. Corresponds to the parsing of substring [i, j] by symbol x.
-* *??* nodes (i), correspond number of rule
+* *symbol* nodes (x, j, i) corresponds to the parsing of substring [i, j] by symbol x. Where 
+** x is a terminal or nonterminal: stem:[x \in \{T, N,\epsilon}]. For stem:[x \in N], `x` has one or more packed node children.
+** (i, j) -- extent,  0 ≤ j ≤ i ≤ m. 
+
+ Extent ensure that symbol node uniquely identified with it's label (x, j, i)
+
+* *packed* nodes (i), correspond number of rule. We create new packed node for each derivation variant.
+
+  If the grammar is ambiguous a node can have several families of children, corresponding to different parses of the string. Each family is grouped together under a packed node.
 
 
 Ambiguous result of the parsing:
@@ -33,21 +41,62 @@ image::trees/2024-01-11-17-50-41.png[]
 
 
 == 2. Binarized SPPF
+
 A binarized SPPF is obtained from a set of indexed BDTs by merging (sharing) nodes with the same label and putting separate families of children under packed nodes <<sjb19>>. 
 
-Contains three types of nodes:
+In order to ensure that the parser has worst-case cubic
+runtime, the SPPFs are binarised by introducing #intermediate nodes#. 
 
-* *symbol* nodes (x, j, i), where stem:[x \in \{T, N,\epsilon}],  0 ≤ j ≤ i ≤ m. Corresponds to the parsing of substring [i, j] by symbol x.
-** For stem:[x \in T] has no children.
-** For stem:[x \in N] has packed node children of the form (A ::= γ ·, k)
-* *intermediate* nodes (t, j, i), where t -- slot between children, right children -- last symbol of productions in slot, left -- first symbol or slot with one step to left.
-** have packed node children with labels of the form (t, k), where j ≤ k ≤ i.
-* *packed* nodes (t, k), where 0 ≤ k ≤ m and t is a grammar slot, t = X ::= α · β.
-** have one or two children: the right child is a symbol node, and the left child (if it exists) is a symbol or intermediate node
+* *intermediate* node (L, j, i), where 
+** L -- grammar slot the form stem:[A := α · β].
+** (i, j) -- extends
 
-image::trees/2024-01-11-17-14-56.png[]
+ For ambiguous grammars, intermediate node can have several families (?) of children, also grouped together under packed nodes.
 
-*Example*
+ Have packed or symbol nodes as children.
+
+* *packed* nodes (L, k), where 
+** L is a grammar slot stem:[X := (\alpha x \cdot \beta, k)]. 
+** k is a pivot --  0 ≤ k ≤ m, is an input position
+** Have one or two children 
+*** Right it's a symbol node stem:[(x, k, i)] which is equal to the left extent of the packed nodes right child.
+*** [optional] Left it's a symbol node labelled stem:[X := (\alpha \cdot x \beta, k)] or stem:[(y, j, k)] if stem:[y = \alpha, |\alpha| = 1]. 
+
+ So, we move position in grammar to left. We can say that by intermediate bode we can represent a rule X := abcd as sequence of `binarized` rules X := Cd, C := Bc, B := ab.
+
+* Symbol nodes now has as a children packed nodes -- one for each derivation variant.
+
+
+*Example* <<sjb19>>
+
+Grammar 
+
+```
+S := b a c | b a a | b A c 
+A := a
+```
+
+SPPF for string `bac`
+
+rectangular -- intermediate
+
+image::trees/sppf_sjb_1.png[]
+
+The two packed node children of the root node (S, 0, 3) correspond to two derivations, one using
+each of the rules which label the packed nodes. The SPPF embeds the two (binarized) derivation
+trees below.
+
+image::trees/sppf_sjb_2.png[]
+
+*Example 1* <<izm>>
+
+image::trees/sppf_izm_1.png[]
+
+*Example 2* <<izm>>
+
+image::trees/sppf_izm.png[]
+
+*Example 3*
 
 Grammar: 
 
@@ -62,6 +111,8 @@ image::trees/2024-01-11-18-25-29.png[]
 *Binarized SPPF*
 
 image::trees/2024-01-11-18-26-18.png[]
+
+=== SPPF Construction
 
 == 3. BSR set: binary subtree representations set <<sjb19>>
 
@@ -93,9 +144,9 @@ stem:[\{(S := a AB, 0, 2, 3), (S := a Ab, 0, 2, 3), (a A, 0, 1, 2), (B := b, 2, 
 We can restore binarized SPPF from BSR set.
 
 * No need for graph construction machinery -> Parsers that generate BSR sets are simpler to construct and require less runtime space
-* No edges are computed or stored
+* No edges are computed or stored. 
 
- Note: интересная структура данных со своими преимуществами. Но необходимо модифицировать алгоритм парсинга. Можно в будущем использовать как оптимизацию по памяти/сложности конструируемого парсера.
+ So you can't apply to this structure error-recovery algorithms with labels on sppf (we use this labels in error-recovery?).
 
 [bibliography]
 == References
@@ -104,3 +155,4 @@ We can restore binarized SPPF from BSR set.
 Derivation representation using binary subtree sets,
 Science of Computer Programming, Volume 175,
 2019, Pages 63-84
+* [[[izm]]] thesis Izmailova
