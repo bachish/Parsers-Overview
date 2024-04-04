@@ -1,3 +1,4 @@
 * Data structures
 ** xref:trees.adoc[]
+*** xref:bin_sppf.adoc[]
 ** xref:automata.adoc[]

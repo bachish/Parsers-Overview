@@ -1,83 +1,140 @@
-:stem: asciimath
+:stem:
 
-= Binarized SPPF <<gr16>>
+= SPPF
 
-There are introduced a new kind of #interbin_sppfte# nodes. One can think of them as interbin_sppfte non-terminals representing the stem:[X := abcde] rule as stem:[X := De, D = Cd, C = Bc, B = ab] <<sje07>>. 
+A #shared packed parse forest# (SPPF) is a representation of all of the derivation trees of a given
+string a1 . . . an. It's designed to reduce the space required to represent multiple derivation tree
 
+* In the worst case an SPPF can be of unbounded polynomial size
+* In binarized form -- worst case cubic size
 
-For general grammars, the cubic SPPFs can be obtained by "sharing" right-hand
-children of different SPPF nodes <<sje07>>. 
+Contains two types of nodes:
 
-Binarized Shared Packed Parse Forest (SPPF) <<17>> compresses derivation trees optimally reusing common nodes
-and subtrees. Version of GLL which uses this structure for
-parsing forest representation achieves worst-case cubic space
-complexity <<15>>.
-Let us present an example of SPPF for the input sentence
-"ababab" and ambiguous grammar G0 (fig 3).
+* *symbol* nodes (x, j, i) corresponds to the parsing of substring [i, j] by symbol x. Where 
+** x is a terminal or nonterminal: stem:[x \in \{T, N,\epsilon}]. For stem:[x \in N], `x` has one or more packed node children.
+** (i, j) -- extent,  0 ≤ j ≤ i ≤ m. 
 
-image::bin_sppf/fig3.png[]
+ Extent ensure that symbol node uniquely identified with it's label (x, j, i)
 
-There are two different leftmost derivations of the given
-sentence w.r.t. grammar G0, hence SPPF contains two different derivation trees. Resulting SPPF(fig. 4a) and two
-trees extracted from it (fig. 4b and fig. 4c) are presented in
-the figure 4.
+* *packed* nodes (i), correspond number of rule. We create new packed node for each derivation variant.
 
-image::bin_sppf/fig4.png[]
-
-Binarized SPPF can be represented as a graph in which each node has one of four types described below with correspondent graphical notation. 
-
-Let i and j be the start and
-the end positions of substring, and let us call a tuple (i, j)
-an #extension# of node.
-
-* Node of rectangle shape labeled with (i, T, j) is a #terminal# node.
-* Node of oval shape labeled with (i, N, j) is a #nonterminal# node. 
-
-This node denotes that there is at least one derivation for substring α = ω[i..j − 1] such that N ⇒∗
-G α, α = ω[i..j − 1]. All derivation trees for
-the given substring and nonterminal can be extracted
-from SPPF by left-to-right top-down graph traversal
-started from respective node. We use filled shape and
-label of form (<|> (i, N, j)) to denote that there are
-multiple derivations from nonterminal N for substring
-ω[i..j − 1].
-
-image::bin_sppf/terminal.png[]
-
-* Node of rectangle shape is is an #interbin_sppfte# node: a special kind of node used for binarization of SPPF. It's labeled with (L, i, j), where L is a grammar slot of 
-the form stem:[A := α · β] where stem:[|α| ≥ 2],  and i
-and j are the left and right extents
-** have packed node children with labels of the form (L, k), where j ≤ k ≤ i. Each children -- ??
+  If the grammar is ambiguous a node can have several families of children, corresponding to different parses of the string. Each family is grouped together under a packed node.
 
 
-* #Packed# node labeled with stem:[(L := α · β, k)].  where L is a grammar position, and k, pivot, is an input position, which is equal to the left extent of the packed nodes right child. 
+Ambiguous result of the parsing:
+
+*set of AST*
+
+image::bin_sppf/2024-01-11-17-50-08.png[]
+
+*SPPF* 
+
+image::bin_sppf/2024-01-11-17-50-30.png[]
+
+In an SPPF, nodes which have the same tree below them are shared and nodes which correspond to different derivations of the same substring from the same nonterminal are combined by creating a packed node for each family of children. 
 
 
-** have one or two children: the left child (if it exists) is a *symbol* or *interbin_sppfte* node and the right child is a *symbol* node. 
-
-In our pictures, we omit labels. Represent a derivation. Subgraph with “root” in such node is one variant of derivation from nonterminal N in case when the parent is a nonterminal node labeled with (<|> (i, N, j)), stem:[i < k \le j].
+image::bin_sppf/2024-01-11-17-50-41.png[]
 
 
-[Bibliography]
-* [[[gr16]]] https://arxiv.org/abs/1612.08872[Semyon Grigorev, Anastasiya Ragozina "Context-Free Path Querying with Structural Representation of Result"]
+== Binarized SPPF
 
-* [[[sje07]]] https://link.springer.com/article/10.1007/s00236-007-0054-z[E. Scott, A. Johnstone, and R. Economopoulos. BRNGLR: A Cubic Tomita-style GLR Parsing Algorithm. Acta informatica, 44(6):427–461, 2007.]
+In order to ensure that the parser has worst-case cubic runtime, the SPPFs are binarized by introducing #intermediate nodes#. 
+
+* *intermediate* node (L, j, i), where 
+** L -- grammar slot the form stem:[A := α · β].
+** (i, j) -- extends
+
+ For ambiguous grammars, intermediate node can have several families (?) of children, also grouped together under packed nodes.
+
+ Have packed or symbol nodes as children.
+
+* *packed* nodes (L, k), where 
+** L is a grammar slot stem:[X := (\alpha x \cdot \beta, k)]. 
+** k is a pivot --  0 ≤ k ≤ m, is an input position
+** Have one or two children 
+*** Right it's a symbol node stem:[(x, k, i)] which is equal to the left extent of the packed nodes right child.
+*** [optional] Left it's a symbol node labelled stem:[X := (\alpha \cdot x \beta, k)] or stem:[(y, j, k)] if stem:[y = \alpha, |\alpha| = 1]. 
+
+ So, we move position in grammar to left. We can say that by intermediate bode we can represent a rule X := abcd as sequence of `binarized` rules X := Cd, C := Bc, B := ab.
+
+* Symbol nodes now has as a children packed nodes -- one for each derivation variant.
 
 
+=== Example 1 <<sjb19>>
+
+Grammar 
+
+```
+S := b a c | b a a | b A c 
+A := a
+```
+
+SPPF for string `bac`
+
+image::bin_sppf/sppf_sjb_1.png[]
+
+==== Symbol nodes 
+Symbol nodes of the SPPF are highlighted in red color.
+
+image::bin_sppf/symbol.png[]
+
+Upper symbol node in the image above means that the non-terminal S parses a substring from 0 to 3.
+
+==== Packed nodes 
+image::bin_sppf/packed.png[]
+
+Each packed node (highlighted in red) notes which derivation rule was used (even if the derivation is deterministic). 
+
+The two packed node children of the root node (S, 0, 3) correspond to *two derivations*, one using
+each of the rules which label the packed nodes. The SPPF embeds the two (binarized) derivation
+trees below.
+
+image::bin_sppf/sppf_sjb_2.png[]
 
 
+==== Intermediate 
+Intermediate node are rectangular. They are used to present a rule S := bAc 
+as sequence of “binarized” rules 
+
+On the left side 
+```
+S := S` c
+S` := b a
+```
+
+On the right side 
+```
+S := S`` c
+S`` := b A
+```
 
 
+image::bin_sppf/intermediate.png[]
 
 
+=== Example 2 <<izm>>
 
+image::bin_sppf/sppf_izm_1.png[]
 
+=== Example 3 <<izm>>
 
+image::bin_sppf/sppf_izm.png[]
 
+=== Example 4
 
+Grammar: 
 
+stem:[
+S \to ABCD, \ A \to a, \ B \to b, \ C \to c, \ D \to d 
+]
 
+*Simple SPPF*
 
+image::bin_sppf/2024-01-11-18-25-29.png[]
 
+*Binarized SPPF*
 
+image::bin_sppf/2024-01-11-18-26-18.png[]
 
+=== SPPF Construction
