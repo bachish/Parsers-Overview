@@ -1,4 +1,5 @@
 * xref:algorithms.adoc[]
 ** xref:gll.adoc[]
+*** xref:regexp.adoc[]
 ** xref:cnp.adoc[]
 ** xref:regognizers.adoc[]

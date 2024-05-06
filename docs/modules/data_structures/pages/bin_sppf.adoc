@@ -138,3 +138,13 @@ image::bin_sppf/2024-01-11-18-25-29.png[]
 image::bin_sppf/2024-01-11-18-26-18.png[]
 
 === SPPF Construction
+#TODO
+
+[bibliography]
+== References
+
+* [[[sjb19]]] Elizabeth Scott, Adrian Johnstone, L. Thomas van Binsbergen,
+Derivation representation using binary subtree sets,
+Science of Computer Programming, Volume 175,
+2019, Pages 63-84
+* [[[izm]]] thesis Izmailova

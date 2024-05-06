@@ -1,1 +1,6 @@
+= Iguana
+
+xref:attachment$Thesis.pdf[Afroozeh, A., & Izmaylova, A. (2019). Practical general top-down parsers. (Thesis, externally
+prepared, Universiteit van Amsterdam)].
+
 image::iguana/index/runtime.png[]

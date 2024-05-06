@@ -1,0 +1,14 @@
+= Matching with regular expression
+
+
+[bibliography]
+== References
+* [[[bbc23]]] Angelo Borsotti, Luca Breveglieri, Stefano Crespi Reghizzi, Angelo Morzenti,
+General parsing with regular expression matching,
+Journal of Computer Languages,
+Volume 74,
+2023,
+101176,
+ISSN 2590-1184,
+https://doi.org/10.1016/j.cola.2022.101176.
+(https://www.sciencedirect.com/science/article/pii/S2590118422000739)
