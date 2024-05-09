@@ -1,1 +1,2 @@
-* xref:iguana/index.adoc[]
+* xref:index.adoc[]
+** xref:iguana/index.adoc[]

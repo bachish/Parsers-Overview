@@ -1,0 +1,15 @@
+= Parsing technics
+
+xref:attachment$Alfred V. Aho, Monica S. Lam, Ravi Sethi, Jeffrey D. Ullman-Compilers - Principles, Techniques, and Tools-Pearson_Addison Wesley (2006).pdf[Alfred V. Aho, Monica S. Lam, Ravi Sethi, Jeffrey D. Ullman-Compilers - Principles, Techniques, and Tools-Pearson_Addison Wesley (2006)].
+
+xref:attachment$Vvedenie_V_Teoriyu_Avtomatov_Yazykov_I_Vychisleni.pdf[Введение в теорию
+автоматов, языков
+и вычислений
+2Е ИЗДАНИЕ
+ДЖОН ХОПКРОФТ
+РАДЖИВ МОТВАНИ
+ДЖЕФФРИ УЛЬМАН
+title.indd 3title.indd 3 07.11.2007 16:57:1907.11.2007 16:57:19
+]
+
+xref:attachment$784685-1.pdf[On-parse disambiguation in generalized LL parsing using attributes]
